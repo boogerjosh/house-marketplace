@@ -11,7 +11,7 @@ function Explore() {
       <header>
         <div className='headerExplore'>
           <div className='headerTextOne'>
-            <p>Where do you <br/> want to explore?</p>
+            <p>Where do you <br/> want to rent?</p>
           </div>
           <div className='headerTextTwo'>
             <p>

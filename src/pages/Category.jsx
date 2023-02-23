@@ -5,6 +5,7 @@ import {db} from '../firebase.config'
 import {toast} from 'react-toastify'
 import Spinner from '../components/Spinner'
 import { async } from '@firebase/util'
+import ListingItem from '../components/ListingItem'
 
 function Category() {
   const [listings, setListings] = useState(null)
@@ -37,7 +38,6 @@ function Category() {
           })
         })
 
-        console.log(listings);
         setListings(listings)
         setLoading(false)
       } catch (error) {
@@ -46,22 +46,27 @@ function Category() {
     }
 
     fetchListings()
-  }, [])
+  }, [params.categoryName])
 
   return (
     <div className='category'>
       <header>
-        <h2 className='pageHeader'>Discovery: Property and houses to rent and sale</h2>
+        <h2 className='pageHeader'>Discovery: Property and houses to rent or sale</h2>
       </header>
 
       {loading ? (<Spinner/>) : listings && listings.length > 0 ?
       (<>
         <main>
           <ul className='categoryListings'>
-            {listings.map((listing) => {
-              (<h3>{listing.data.name}</h3>)
-              // console.log(listing.data.name)
-            })}
+            <div className='containerListings'>
+              {listings.map((listing) => (
+                <ListingItem
+                  listing={listing.data}
+                  id={listing.id}
+                  key={listing.id} 
+                />
+              ))}
+            </div>
           </ul>
         </main>
       </>) : (
