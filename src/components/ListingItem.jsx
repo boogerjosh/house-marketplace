@@ -12,7 +12,7 @@ function ListingItem({ listing, id }) {
         <div className="cardContentList">
           <div className="imgContainer">
             <div className="imgList">
-              <img src={listing.imagesUrls[0]}  alt={listing.name} className="categoryListingImg" />
+              <img src={listing.imgUrls[0]}  alt={listing.name} className="categoryListingImg" />
             </div>
           </div>
 
@@ -35,7 +35,9 @@ function ListingItem({ listing, id }) {
             </div>
             <div className='priceAndButton'>
               <div>
-                <p className="normalPrice">$3,000</p>
+                {listing.regularPrice && <p className="normalPrice">$ {listing.regularPrice
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>}
                 <p className="discountPrice"> $ 
                 {listing.offer
                   ? listing.discountedPrice

@@ -10,6 +10,8 @@ import SignUp from './pages/SignUp'
 import ForgotPassword from './pages/ForgotPassword'
 import Category from './pages/Category'
 import CreateListing from './pages/CreateListing'
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 // import EditListing from './pages/EditListing'
 // import Listing from './pages/Listing'
 // import Contact from './pages/Contact'
@@ -40,7 +42,7 @@ function App() {
       <Navbar />
     </Router>
 
-    {/* <ToastContainer /> */}
+    <ToastContainer />
   </>
   );
 }
