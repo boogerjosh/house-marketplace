@@ -87,18 +87,18 @@ function CreateListing() {
       return
     }
 
-    let geolocation = {}
+    let geoLocation = {}
     let location
 
     if (geolocationEnabled) {
       const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GEOCODE_API_KEY}`
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyBefCVJkrullhwrSMRqq1UcVnzPDNZj7WU`
       )
 
       const data = await response.json()
 
-      geolocation.lat = data.results[0]?.geometry.location.lat ?? 0
-      geolocation.lng = data.results[0]?.geometry.location.lng ?? 0
+      geoLocation.lat = data.results[0]?.geometry.location.lat ?? 0
+      geoLocation.lng = data.results[0]?.geometry.location.lng ?? 0
 
       location =
         data.status === 'ZERO_RESULTS'
@@ -111,8 +111,8 @@ function CreateListing() {
         return
       }
     } else {
-      geolocation.lat = latitude
-      geolocation.lng = longitude
+      geoLocation.lat = latitude
+      geoLocation.lng = longitude
     }
 
     // Store image in firebase
@@ -167,7 +167,7 @@ function CreateListing() {
     const formDataCopy = {
       ...formData,
       imgUrls,
-      geolocation,
+      geoLocation,
       timestamp: serverTimestamp(),
     }
 

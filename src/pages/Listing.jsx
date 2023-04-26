@@ -28,7 +28,6 @@ function Listing() {
 
       if (docSnap.exists()) {
         setListing(docSnap.data())
-        console.log(docSnap.data())
         setLoading(false)
       }
     }
@@ -46,12 +45,6 @@ function Listing() {
         <title>{listing.name}</title>
       </Helmet>
       <Swiper slidesPerView={1} pagination={{ clickable: true }}>
-
-      {/* {listing.imgUrls.map((slide, id) => (
-        <SwiperSlide key={id}>
-          <img src={listing.imgUrls[id]} alt=""/>
-        </SwiperSlide>
-      ))} */}
         {listing.imgUrls.map((url, index) => (
           <SwiperSlide key={index}>
             <div
@@ -64,20 +57,6 @@ function Listing() {
           </SwiperSlide>
         ))}
       </Swiper>
-
-      {/* <Swiper slidesPerView={1} pagination={{ clickable: true, wrapperClass: 'swiper-pagination' }}>
-        {listing.imgUrls.map((url, index) => (
-            <SwiperSlide key={index}>
-            <div
-                style={{
-                background: `url(${listing.imgUrls[index]}) center no-repeat`,
-                backgroundSize: 'cover',
-                }}
-                className='swiperSlideDiv'
-            ></div>
-            </SwiperSlide>
-        ))}
-      </Swiper> */}
 
       <div
         className='shareIconDiv'
@@ -135,7 +114,7 @@ function Listing() {
         <div className='leafletContainer'>
           <MapContainer
             style={{ height: '100%', width: '100%' }}
-            center={[listing.geoLocation.lat, listing.geoLocation.lng]}
+            center={[listing.geoLocation?.lat, listing.geoLocation.lng]}
             zoom={13}
             scrollWheelZoom={false}
           >

@@ -9,6 +9,8 @@ import React from 'react'
 function Explore() {
   return (
     <div className='explore'>
+      <Slider/>
+
       <header>
         <div className='headerExplore'>
           <div className='headerTextOne'>
@@ -24,8 +26,6 @@ function Explore() {
       </header>
 
       <main>
-        <Slider />
-
         <div className='exploreCategories'>
           <Link to='/category/rent'>
             <img
