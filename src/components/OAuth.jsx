@@ -12,9 +12,13 @@ function OAuth() {
   const onGoogleClick = async () => {
     try {
       const auth = getAuth()
+      console.log(auth, 'auth');
       const provider = new GoogleAuthProvider()
+      console.log(provider, 'provider');
       const result = await signInWithPopup(auth, provider)
+      console.log(result, 'result')
       const user = result.user
+      console.log(user, 'user')
 
       // Check for user
       const docRef = doc(db, 'users', user.uid)
