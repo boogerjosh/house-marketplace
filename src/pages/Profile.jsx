@@ -14,14 +14,17 @@ import {
 import { db } from '../firebase.config'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-// import ListingItem from '../components/ListingItem'
+
 import arrowRight from '../assets/svg/keyboardArrowRightIcon.svg'
 import homeIcon from '../assets/svg/homeIcon.svg'
+import bedIcon from '../assets/svg/bedIcon.svg'
+import bathtubIcon from '../assets/svg/bathtubIcon.svg'
+import { ReactComponent as DeleteIcon } from '../assets/svg/deleteIcon.svg'
 
 function Profile() {
   const auth = getAuth()
-//   const [loading, setLoading] = useState(true)
-//   const [listings, setListings] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [listings, setListings] = useState(null)
   const [changeDetails, setChangeDetails] = useState(false)
   const [formData, setFormData] = useState({
     name: auth.currentUser.displayName,
@@ -32,33 +35,35 @@ function Profile() {
 
   const navigate = useNavigate()
 
-//   useEffect(() => {
-//     const fetchUserListings = async () => {
-//       const listingsRef = collection(db, 'listings')
+  useEffect(() => {
+    const fetchUserListings = async () => {
+      const listingsRef = collection(db, 'listings')
 
-//       const q = query(
-//         listingsRef,
-//         where('userRef', '==', auth.currentUser.uid),
-//         orderBy('timestamp', 'desc')
-//       )
+      const q = query(
+        listingsRef,
+        where('userRef', '==', auth.currentUser.uid),
+        orderBy('timestamp', 'desc')
+      )
 
-//       const querySnap = await getDocs(q)
+      const querySnap = await getDocs(q)
 
-//       let listings = []
+      let listings = []
 
-//       querySnap.forEach((doc) => {
-//         return listings.push({
-//           id: doc.id,
-//           data: doc.data(),
-//         })
-//       })
+      querySnap.forEach((doc) => {
+        return listings.push({
+          id: doc.id,
+          data: doc.data(),
+        })
+      })
 
-//       setListings(listings)
-//       setLoading(false)
-//     }
+      console.log(listings);
 
-//     fetchUserListings()
-//   }, [auth.currentUser.uid])
+      setListings(listings)
+      setLoading(false)
+    }
+
+    fetchUserListings()
+  }, [auth.currentUser.uid])
 
   const onLogout = () => {
     auth.signOut()
@@ -92,16 +97,16 @@ function Profile() {
     }))
   }
 
-//   const onDelete = async (listingId) => {
-//     if (window.confirm('Are you sure you want to delete?')) {
-//       await deleteDoc(doc(db, 'listings', listingId))
-//       const updatedListings = listings.filter(
-//         (listing) => listing.id !== listingId
-//       )
-//       setListings(updatedListings)
-//       toast.success('Successfully deleted listing')
-//     }
-//   }
+  const onDelete = async (listingId) => {
+    if (window.confirm('Are you sure you want to delete?')) {
+      await deleteDoc(doc(db, 'listings', listingId))
+      const updatedListings = listings.filter(
+        (listing) => listing.id !== listingId
+      )
+      setListings(updatedListings)
+      toast.success('Successfully deleted listing')
+    }
+  }
 
 //   const onEdit = (listingId) => navigate(`/edit-listing/${listingId}`)
 
@@ -152,28 +157,78 @@ function Profile() {
             </form>
             </div>
 
-            <Link to='/create-listing' className='createListing'>
+            <Link to='/create-listing' className='createListing'> 
             <img src={homeIcon} alt='home' />
             <p>Sell or rent your home</p>
             <img src={arrowRight} alt='arrow right' />
             </Link>
 
-            {/* {!loading && listings?.length > 0 && (
+            {!loading && listings?.length > 0 && (
             <>
                 <p className='listingText'>Your Listings</p>
                 <ul className='listingsList'>
                 {listings.map((listing) => (
-                    <ListingItem
-                    key={listing.id}
-                    listing={listing.data}
-                    id={listing.id}
-                    onDelete={() => onDelete(listing.id)}
-                    onEdit={() => onEdit(listing.id)}
-                    />
+                    <li className='categoryListingProfile'>
+                     <Link
+                       to={`/category/${listing.data.type}/${listing.id}`}
+                       className='categoryListingLinkProfile'
+                     >
+                       <img
+                         src={listing.data.imgUrls[0]}
+                         alt={listing.data.name}
+                         className='categoryListingImgProfile'
+                       />
+                       <div className='categoryListingDetails'>
+                         <p className='categoryListingLocationProfile'>{listing.data.location}</p>
+                         <p className='categoryListingNameProfile'>{listing.data.name}</p>
+               
+                         <p className='categoryListingPrice'>
+                           $
+                           {listing.data.offer
+                             ? listing.data.discountedPrice
+                                 .toString()
+                                 .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                             : listing.data.regularPrice
+                                 .toString()
+                                 .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                           {listing.data.type === 'rent' && ' / Month'}
+                         </p>
+                         <div className='categoryListingInfoDiv'>
+                           <img src={bedIcon} alt='bed' />
+                           <p className='categoryListingInfoText'>
+                             {listing.data.bedrooms > 1
+                               ? `${listing.data.bedrooms} Bedrooms`
+                               : '1 Bedroom'}
+                           </p>
+                           <img src={bathtubIcon} alt='bath' />
+                           <p className='categoryListingInfoText'>
+                             {listing.data.bathrooms > 1
+                               ? `${listing.data.bathrooms} Bathrooms`
+                               : '1 Bathroom'}
+                           </p>
+                         </div>
+                       </div>
+                     </Link>
+                    
+                     <DeleteIcon
+                        className='removeIcon'
+                        fill='rgb(231, 76,60)'
+                        onClick={() => onDelete(listing.id, listing.name)}
+                     />
+                     {/* {onDelete && (
+                       <DeleteIcon
+                         className='removeIcon'
+                         fill='rgb(231, 76,60)'
+                         onClick={() => onDelete(listing.id, listing.name)}
+                       />
+                     )}
+               
+                     {onEdit && <EditIcon className='editIcon' onClick={() => onEdit(id)} />} */}
+                   </li>
                 ))}
                 </ul>
             </>
-            )} */}
+            )}
         </main>
       </div>
     </div>

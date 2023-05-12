@@ -44,6 +44,7 @@ function Listing() {
       <Helmet>
         <title>{listing.name}</title>
       </Helmet>
+      
       <Swiper slidesPerView={1} pagination={{ clickable: true }}>
         {listing.imgUrls.map((url, index) => (
           <SwiperSlide key={index}>
